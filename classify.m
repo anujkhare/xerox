@@ -16,10 +16,10 @@ for m=1:ncases
  
    if(ll_living > ll_dead)
      labels(m) = 0;
-     printf('LIVE %f\n', abs(ll_dead - ll_living));
+     %printf('LIVE %f\n', abs(ll_dead - ll_living));
    else
      labels(m) = 1;
-     printf('DIE %f\n', abs(ll_dead - ll_living));
+     %printf('DIE %f\n', abs(ll_dead - ll_living));
    endif
 end
 
