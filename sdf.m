@@ -6,7 +6,6 @@ for i=50:100
  [loglik_dead, errors_dead] = mhmm_logprob(patient_vitals_dead(i:i, 1), ...
                                 prior_dead, transmat_dead, mu_dead, Sigma_dead, mixmat_dead);
 
-
   if(loglik_living > loglik_dead)
     printf('LIVE %f\n', loglik_living - loglik_dead);
    else
