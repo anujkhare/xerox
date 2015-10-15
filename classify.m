@@ -1,4 +1,4 @@
-function [labels, lldiff] = classify(data, true_labels, prior_living, 
+function [labels, loglik_living, loglik_dead] = classify(data, true_labels, prior_living, 
                             transmat_living, mu_living, Sigma_living, mixmat_living,
                             prior_dead, transmat_dead, mu_dead, Sigma_dead, mixmat_dead)
 
@@ -7,7 +7,9 @@ ncases = length(data);
 
 errors = [];
 labels = zeros(size(true_labels, 1), 1);
-lldiff = zeros(size(true_labels, 1), 1);
+%lldiff = zeros(size(true_labels, 1), 1);
+loglik_dead = zeros(size(true_labels, 1), 1);
+loglik_living = zeros(size(true_labels, 1), 1);
 
 for m=1:ncases
   obslik_dead = mixgauss_prob(data{m}, mu_dead, Sigma_dead, mixmat_dead);
@@ -16,7 +18,9 @@ for m=1:ncases
   obslik_living = mixgauss_prob(data{m}, mu_living, Sigma_living, mixmat_living);
   [alpha, beta, gamma, ll_living] = fwdback(prior_living, transmat_living, obslik_living, 'fwd_only', 1);
 
-   lldiff(m) = abs(ll_living - ll_dead);
+  %lldiff(m) = abs(ll_living - ll_dead);
+  loglik_dead(m) = ll_dead;
+  loglik_living(m) = ll_living;
   
    if(ll_living > ll_dead)
      labels(m) = 0;
