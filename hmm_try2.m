@@ -1,10 +1,10 @@
 function [LL_living, prior_living, transmat_living, mu_living, Sigma_living, mixmat_living, ...
           LL_dead, prior_dead, transmat_dead, mu_dead, Sigma_dead, mixmat_dead] = ...
-                                  hmm_try1(data_living, data_dead)
+                                  hmm_try2(data_living, data_dead)
 # cd obs
 # read;
 # init;
-O = 6;          %Number of coefficients in a vector 
+O = 31;          %Number of coefficients in a vector 
 #T = 420;         %Number of vectors in a sequence 
 #nex = ;        %Number of sequences 
 M = 1;          %Number of mixtures 
@@ -27,7 +27,7 @@ Sigma0 = reshape(Sigma0, [O O Q M]);
 mixmat0 = ones(Q, 1); #mixmat0 = mk_stochastic(rand(Q,M));
 
 [LL_living, prior_living, transmat_living, mu_living, Sigma_living, mixmat_living] = ...
-    mhmm_em(data0, prior0, transmat0, mu0, Sigma0, mixmat0, 'max_iter', 100, 'verbose', 0);
+    mhmm_em(data0, prior0, transmat0, mu0, Sigma0, mixmat0, 'max_iter', 100, 'verbose', 1)
 
     
  ### DEAD HMM
@@ -46,6 +46,6 @@ Sigma1 = reshape(Sigma1, [O O Q M]);
 mixmat1 = ones(Q, 1); #mixmat1 = mk_stochastic(rand(Q,M));
 
 [LL_dead, prior_dead, transmat_dead, mu_dead, Sigma_dead, mixmat_dead] = ...
-    mhmm_em(data1, prior1, transmat1, mu1, Sigma1, mixmat1, 'max_iter', 100, 'verbose', 0);
+    mhmm_em(data1, prior1, transmat1, mu1, Sigma1, mixmat1, 'max_iter', 100, 'verbose', 1)    
 
 end
