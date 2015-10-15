@@ -1,4 +1,6 @@
-function y = hmm_try1(data_living, data_dead)
+function [LL_living, prior_living, transmat_living, mu_living, Sigma_living, mixmat_living, ...
+          LL_dead, prior_dead, transmat_dead, mu_dead, Sigma_dead, mixmat_dead] = ...
+                                  hmm_try1(data_living, data_dead)
 # cd obs
 # read;
 # init;
