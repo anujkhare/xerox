@@ -23,11 +23,11 @@ data0 = data_living;
 %prior0 = [0.5 0.5];
 %transmat0 = [0.5 0.5 ; 0.5 0.5];
 
-prior0 = [0.25 0.25 0.25 0.25];
-transmat0 = [0.25 0.25 0.25 0.25;
-             0.25 0.25 0.25 0.25;
-             0.25 0.25       0.25 0.25;
-             0.25 0.25       0.25 0.25];
+prior0 = [0.5 0.5 0 0];
+transmat0 = [0.5 0.3 0.1 0.1;
+             0.3 0.5 0.1 0.1;
+             0 0 0.8 0.2;
+             0 0 0.2 0.8];
 [mu0, Sigma0] = mixgauss_init(Q*M, data0{1}, 'full', 'kmeans');
 mu0 = reshape(mu0, [O Q M]);
 Sigma0 = reshape(Sigma0, [O O Q M]);
@@ -38,7 +38,7 @@ mixmat0 = mk_stochastic(rand(Q,M));
     mhmm_em(data0, prior0, transmat0, mu0, Sigma0, mixmat0, 'max_iter', 100, 'verbose', 1);
 
 
- ### DEAD HMM
+### DEAD HMM
 %prior1 = [0.5 0.5];
 %transmat1 = [0.5 0.5 ; 0.5 0.5];
 prior1 = prior0;

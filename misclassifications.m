@@ -16,8 +16,6 @@ scatter(ones(size(a, 1), 1), a, c='r');
 a = ll_live_living(misind_living);
 scatter(ones(size(a, 1), 1), a, c='b'); 
 
-
-
 lldiff_dead = abs(ll_live_dead - ll_die_dead);
 lldiff_living = abs(ll_live_living - ll_die_living);
 

@@ -1,63 +1,30 @@
-data_living = patients_living;
-data_dead = patients_dead;
+data_living = patient_vitals_living;
+data_dead = patient_vitals_dead;
 
-%n_living = size(data_living, 1);
-%n_dead = size(data_dead, 1);
-n_living = 100;
-n_dead = 100;
+n_living = size(data_living, 1);
+n_dead = size(data_dead, 1);
+N = n_living + n_dead;
 
-if 1
-  ind0 = randperm(size(data_living, 1));
-  ind1 = randperm(size(data_dead, 1));
+if 0
+  ind0 = randperm(n_living + n_dead);
+%  ind1 = randperm(n_dead);
 
   validation_split = 0.7;
-  data_train_living = data_living(ind0(1:int64(validation_split*n_living)), 1);
-  data_valid_living = data_living(ind0(int64(validation_split*n_living) + 1:n_living), 1);
-  data_train_dead = data_dead(ind1(1:int64(validation_split*n_dead)), 1);
-  data_valid_dead = data_dead(ind1(int64(validation_split*n_dead) + 1:n_dead), 1);
+
+  data = [data_living; data_dead];
+  labels = [zeros(size(data_living, 1), 1); ones(size(data_dead, 1), 1)];
+  
+  data_train = data(ind0(1:int64(validation_split*N)), 1);
+  labels_train = labels(ind0(1:int64(validation_split*N)), 1);
+  data_valid = data(ind0(int64(validation_split*N) + 1:N), 1);
+  labels_valid = labels(ind0(int64(validation_split*N) + 1:N), 1);
 endif
 
 if 1
   % Train the HMMs
-  [LL_living, prior_living, transmat_living, mu_living, Sigma_living, mixmat_living, ...
-          LL_dead, prior_dead, transmat_dead, mu_dead, Sigma_dead, mixmat_dead] = ...
-                                    hmm_try2(data_train_living, data_train_dead);
+  [LL_combined, prior_combined, transmat_combined, mu_combined, Sigma_combined, mixmat_combined] = ...
+                                      hmm_try2(data_train);
 endif
 
-lens_dead = ones(size(data_valid_dead, 1), 1);
-lens_living = ones(size(data_valid_living, 1), 1);
-for i = 1:size(data_valid_dead, 1)
-  lens_dead(i) = size(data_valid_dead{i}, 2);
-end
-for i = 1:size(data_valid_living, 1)
-  lens_living(i) = size(data_valid_living{i}, 2);
-end
-
-# TRAINING DATA
-printf('Training: Dead:\n');
-[labels_dead, ll_live_dead, ll_die_dead] = ...
-        classify(data_train_dead, ones(size(data_train_dead, 1), 1),
-               prior_living, transmat_living, mu_living, Sigma_living, mixmat_living,
-               prior_dead, transmat_dead, mu_dead, Sigma_dead, mixmat_dead);
-
-printf('Training: Alive:\n');
-[labels_living, ll_live_living, ll_die_living] = ...
-        classify(data_train_living, zeros(size(data_train_living, 1), 1),
-               prior_living, transmat_living, mu_living, Sigma_living, mixmat_living,
-               prior_dead, transmat_dead, mu_dead, Sigma_dead, mixmat_dead);
-
-# VALIDATION DATA
-printf('Validation\n');
-true_dead = ones(size(data_valid_dead, 1), 1);
-printf('Dead patients data:\n');
-[labels_dead, ll_live_dead, ll_die_dead] = ...
-        classify(data_valid_dead, true_dead,
-               prior_living, transmat_living, mu_living, Sigma_living, mixmat_living,
-               prior_dead, transmat_dead, mu_dead, Sigma_dead, mixmat_dead);
-
-printf('Living patients data:\n');
-true_living = zeros(size(data_valid_living, 1), 1);
-[labels_living, ll_live_living, ll_die_living] = ...
-        classify(data_valid_living, true_living,
-               prior_living, transmat_living, mu_living, Sigma_living, mixmat_living,
-               prior_dead, transmat_dead, mu_dead, Sigma_dead, mixmat_dead);
+%view_viterbi_paths(data, prior_combined, transmat_combined, ...
+%                    mu_combined, Sigma_combined, mixmat_combined);

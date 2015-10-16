@@ -1,3 +1,15 @@
+### ALL PATIENT VITALS
+patient_vitals = cell(111, 1);
+folder = '/root/code/xerox/vitals_mean/';
+files = dir([folder, '*.csv']);
+for k = 1 : length(files)
+    file_name = files(k).name;
+    X = csvread([folder, file_name]);
+    disp(size(X));
+    patient_vitals(k) = X';
+ end
+
+### VITALS WITHOUT LABS
 %patient_vitals_dead = cell(111, 1);
 %folder = '/root/code/xerox/vitals_dead/';
 %files = dir([folder, '*.csv']);
@@ -19,22 +31,24 @@
 %    patient_vitals_living(k) = X';
 % end 
 
-patients_dead = cell(111, 1);
-folder = '/root/code/xerox/patient_dead/';
-files = dir([folder, '*.csv']);
-for k = 1 : length(files)
-  file_name = files(k).name;
-  X = csvread([folder, file_name]);
-  disp(size(X));
-  patients_dead(k) = X';
-end 
 
-patients_living = cell(111, 1);
-folder = '/root/code/xerox/patient_living/';
-files = dir([folder, '*.csv']);
-for k = 1 : length(files)
-  file_name = files(k).name;
-  X = csvread([folder, file_name]);
-  disp(size(X));
-  patients_living(k) = X';
-end
+### WITH LABS
+%patients_dead = cell(111, 1);
+%folder = '/root/code/xerox/patient_dead/';
+%files = dir([folder, '*.csv']);
+%for k = 1 : length(files)
+%  file_name = files(k).name;
+%  X = csvread([folder, file_name]);
+%  disp(size(X));
+%  patients_dead(k) = X';
+%end 
+%
+%patients_living = cell(111, 1);
+%folder = '/root/code/xerox/patient_living/';
+%files = dir([folder, '*.csv']);
+%for k = 1 : length(files)
+%  file_name = files(k).name;
+%  X = csvread([folder, file_name]);
+%  disp(size(X));
+%  patients_living(k) = X';
+%end
